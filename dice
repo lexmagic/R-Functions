@@ -1,0 +1,42 @@
+## Function for calculating the results of rolling multiple dice.
+## Based on he generating function method.
+dice <- function(n, s = 6, prop = TRUE){
+
+## We use the polynom package
+	library(polynom)
+
+## Create the generating function for the
+## event of interest. Polynomial of the form:
+## x + x^2 + x^3 ... x^n
+	p <- polynomial(c(0,rep(1,s)))^n
+	
+## Extract coefficients, create a vector with the sums
+## Calculate total number of results in order to get
+## probabilities.
+	co <- p[(n+1):(n*s+1)]
+	x <- (n):(n*s)
+	t <- sum(co)
+	tit <- paste("Roll of", n ,"dice")
+
+## Plot everything showing either probabilities
+## of absolute counts.
+	if(prop == TRUE) {
+		plot(x, co/t,  type = "h", main = tit, lwd = 2,
+			ylab = "Probability", xlab = "Sum",
+			xaxp = c(min(x),max(x),(length(x)-1)/4),
+			ylim = c(0,max(co/t)))
+		points(x, co/t, pch = 16)
+		abline(h = 0)
+	}
+	if(prop == FALSE) {
+		plot(x, co, type = "h", main = tit, lwd = 2,
+			ylab = "Count", xlab = "Sum",
+			ylim = c(0,max(co)))
+		points(x, co, pch = 16)
+		abline(h = 0)
+	}
+	
+## Nicely formatted data frame with relevant info
+	out <- data.frame(x = x, co = co, pr = co/t)
+	format(out, digits = 2)
+}
