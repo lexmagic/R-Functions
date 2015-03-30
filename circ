@@ -1,0 +1,22 @@
+circ <- function(r = 1, x = 0, y = 0, cen = c(x,y), n = 100, 
+	arc = 2*pi, a = 1, b = 1, p = 0, rotate = 0) {
+
+	## Calculate points at which to plot.
+	th <- seq(0, arc, len = (n+1)) + p
+
+	## Calculate a circle by Euler's equation.
+	coords <- exp(1i*th) * r
+	
+	## Stretch and/or reposition the circle
+	xx <- a*Re(coords) + cen[1]
+	yy <- b*Im(coords) + cen[2]
+	
+	## Rotate the figure
+	x. <- xx*cos(rotate) - yy*sin(rotate)
+	y. <- xx*sin(rotate) + yy*cos(rotate)
+
+	## List the outputs as x and y so plot()
+	## will read them.
+	out <- list(x = x., y = y.)
+	invisible(out)
+}
